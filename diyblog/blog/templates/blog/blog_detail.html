@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>{{ blog.title }}</h1>
+<p><strong>Post date</strong> {{ blog.created|date:"M. d, Y" }}</p>
+<p><strong>Author:</strong> {{ blog.author }}</p>
+<p><strong>Description:</strong></p>
+<p>{{ blog.description }}</p>
+
+<div class="ml-2 mt-2">
+  <h5>Comments</h5>
+  <hr>
+
+  {% for comment in blog.comment_set.all %}
+    <p>{{ comment.author }} ({{ comment.created }}) - {{ comment.description }}</p>
+    <hr>
+  {% endfor %}
+  {% if user.is_authenticated %}
+    <a href="{% url 'comment_create' blog.id %}">Add a new comment</a>
+  {% else %}
+    <a href="{% url 'login' %}">Login</a> to add a new comment
+  {% endif %}
+</div>
+{% endblock %}
